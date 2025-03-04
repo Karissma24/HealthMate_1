@@ -21,16 +21,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: homepage(),
+      home: Homepage(),
       routes: {
-        '/HomePage' :(context) => homepage(),
-        '/Hospitals' :(context) => hospitals(),
-        '/HealthJournal' :(context) => healthjournal(),
-        '/Healthbot' :(context) => healthbot(),
-        '/MyHealth' :(context) => myhealth(),
-        '/Settings' :(context) => settings(),
+        '/HomePage' :(context) => Homepage(),
+        '/Hospitals' :(context) => Hospitals(),
+        '/HealthJournal' :(context) => HealthJournal(),
+        '/HealthBot' :(context) => HealthBot(),
+        '/MyHealth' :(context) => MyHealth(),
+        '/Settings' :(context) => Settings(),
+    
 
       },
       );
+      
   }
 }
