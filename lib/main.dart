@@ -1,36 +1,84 @@
-
 import 'package:flutter/material.dart';
+import 'db/ai_helper.dart';
+import 'secrets.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-import 'package:healthmate1/pages/healthjournal.dart';
-import 'package:healthmate1/pages/healthbot.dart';
-import 'package:healthmate1/pages/homepage.dart';
-import 'package:healthmate1/pages/hospitals.dart';
-import 'package:healthmate1/pages/myhealth.dart';
-import 'package:healthmate1/pages/settings.dart';
+  debugPrint("API Key Loaded from secrets.dart: ${Secrets.openAiApiKey}");
 
-
-void main() {
-  runApp(const MyApp());
+  runApp(const HealthMateApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HealthMateApp extends StatelessWidget {
+  const HealthMateApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: homepage(),
-      routes: {
-        '/HomePage' :(context) => homepage(),
-        '/Hospitals' :(context) => hospitals(),
-        '/HealthJournal' :(context) => healthjournal(),
-        '/Healthbot' :(context) => healthbot(),
-        '/MyHealth' :(context) => myhealth(),
-        '/Settings' :(context) => settings(),
-
-      },
-      );
+      home: const AITestScreen(),
+    );
   }
 }
+
+class AITestScreen extends StatefulWidget {
+  const AITestScreen({super.key});
+
+  @override
+  AITestScreenState createState() => AITestScreenState();
+}
+
+class AITestScreenState extends State<AITestScreen> {
+  final AIHelper aiHelper = AIHelper();
+  final TextEditingController symptomsController = TextEditingController();
+  String _aiDiagnosis = "Waiting for AI Diagnosis...";
+
+  void _getDiagnosis() async {
+    String symptoms = symptomsController.text;
+    if (symptoms.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter your symptoms!")),
+      );
+      return;
+    }
+
+    setState(() {
+      _aiDiagnosis = "AI is analyzing symptoms...";
+    });
+
+    String diagnosis = await aiHelper.getAIDiagnosis(symptoms);
+
+    setState(() {
+      _aiDiagnosis = diagnosis;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("HealthMate AI Diagnosis")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: symptomsController,
+              decoration: const InputDecoration(labelText: "Enter Symptoms"),
+            ),
+            ElevatedButton(
+              onPressed: _getDiagnosis,
+              child: const Text("Get AI Diagnosis"),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              _aiDiagnosis,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
