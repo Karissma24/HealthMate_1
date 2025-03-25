@@ -29,6 +29,11 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<string>NSLocationWhenInUseUsageDescription</string>
+	<key>To display and track location</key>
+	<string>NSLocationAlwaysUsageDescription</string>
+	<key>To display and track location</key>
+	
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
@@ -45,5 +50,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick an image from gallery</string>
+	<key> NSCameraUsageDescription</key> 
+	<string> Pick image from Camera </string>
 </dict>
 </plist>

@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
-
-
 import 'package:healthmate1/pages/healthjournal.dart';
 import 'package:healthmate1/pages/healthbot.dart';
 import 'package:healthmate1/pages/homepage.dart';
-import 'package:healthmate1/pages/hospitals.dart';
 import 'package:healthmate1/pages/myhealth.dart';
 import 'package:healthmate1/pages/settings.dart';
+//import 'package:provider/provider.dart';
+import 'package:healthmate1/components/healthjournal/SharedPreferencesService.dart';
 
-
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesService.init();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,20 +18,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      title: 'Health Mate',
+      initialRoute: '/HomePage',
       routes: {
-        '/HomePage' :(context) => Homepage(),
-        '/Hospitals' :(context) => Hospitals(),
-        '/HealthJournal' :(context) => HealthJournal(),
-        '/HealthBot' :(context) => HealthBot(),
-        '/MyHealth' :(context) => MyHealth(),
-        '/Settings' :(context) => Settings(),
-    
-
+        '/HomePage': (context) => const Homepage(),
+        '/HealthJournal': (context) => const HealthJournal(),
+        '/HealthBot': (context) => const HealthBot(),
+        '/MyHealth': (context) => const MyHealth(),
+        '/Settings': (context) => const Settings(),
+        //'/Hospitals' :(context) => Hospitals(),
+        //'/GoogleMaps': (context) => GoogleMapFlutter()
       },
-      );
-      
+    );
   }
 }
