@@ -1,84 +1,47 @@
+import 'Pages/homepage.dart';
+import 'Pages/hospitals.dart';
+import 'Pages/myhealth.dart';
+import 'Pages/setting.dart';
+import 'Pages/healthjournal.dart';
+import 'Pages/healthbot.dart';
+
 import 'package:flutter/material.dart';
-import 'db/ai_helper.dart';
-import 'secrets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  
+  if (!kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.macOS ||
+          defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
 
-  debugPrint("API Key Loaded from secrets.dart: ${Secrets.openAiApiKey}");
-
-  runApp(const HealthMateApp());
+  runApp(const MyApp());
 }
 
-class HealthMateApp extends StatelessWidget {
-  const HealthMateApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AITestScreen(),
+      home: Homepage(),
+      routes: {
+        '/HomePage': (context) => Homepage(),
+        '/Hospitals': (context) => Hospitals(),
+        '/HealthJournal': (context) => HealthJournal(),
+        '/HealthBot': (context) => HealthBot(),
+        '/MyHealth': (context) => MyHealth(),
+        '/Settings': (context) => Settings(),
+      },
     );
   }
 }
 
-class AITestScreen extends StatefulWidget {
-  const AITestScreen({super.key});
-
-  @override
-  AITestScreenState createState() => AITestScreenState();
-}
-
-class AITestScreenState extends State<AITestScreen> {
-  final AIHelper aiHelper = AIHelper();
-  final TextEditingController symptomsController = TextEditingController();
-  String _aiDiagnosis = "Waiting for AI Diagnosis...";
-
-  void _getDiagnosis() async {
-    String symptoms = symptomsController.text;
-    if (symptoms.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter your symptoms!")),
-      );
-      return;
-    }
-
-    setState(() {
-      _aiDiagnosis = "AI is analyzing symptoms...";
-    });
-
-    String diagnosis = await aiHelper.getAIDiagnosis(symptoms);
-
-    setState(() {
-      _aiDiagnosis = diagnosis;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("HealthMate AI Diagnosis")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: symptomsController,
-              decoration: const InputDecoration(labelText: "Enter Symptoms"),
-            ),
-            ElevatedButton(
-              onPressed: _getDiagnosis,
-              child: const Text("Get AI Diagnosis"),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _aiDiagnosis,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
