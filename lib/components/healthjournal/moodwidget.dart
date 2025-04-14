@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthmate1/components/healthjournal/SharedPreferencesService.dart';
-import 'mood.dart';
+import 'package:healthmate1/components/healthjournal/mood.dart';
 
 class MoodWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -34,59 +34,59 @@ Future<void> _loadMood() async {
     });
   }
 
-  @override
-Widget build(BuildContext context) {
+ @override
+  Widget build(BuildContext context) {
   double screenWidth = MediaQuery.of(context).size.width;
 
-  int numberOfColumns = 3; // Adjust this to fit your design
+  int numberOfColumns = 3;
   double imageWidth = (screenWidth / numberOfColumns) - 10;
   double imageHeight = imageWidth;
 
-  return Scaffold(
-    appBar: AppBar(
-      leading: Container(), // Explicitly set an empty container to remove the back button
-      centerTitle: true, // Optional: Center the title if desired
-    ),
-    body: Column(
-      mainAxisAlignment: MainAxisAlignment.center, // Centers content vertically in the column
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "How are you feeling today?", // Your header text
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), // Styling for the text
-          ),
+  return Column(
+    children: [
+    /*
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "How are you feeling today?",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        Expanded(
-          child: GridView.builder(
-            padding: EdgeInsets.all(5),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 5,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
+      ),
+    */ 
+      GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(5),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: numberOfColumns,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+        ),
+        itemCount: moods.length,
+        itemBuilder: (context, index) {
+          bool isSelected = moods[index].imagelib == _selectedMoodImage;
+          return GestureDetector(
+            onTap: () => _saveMood(moods[index].imagelib),
+            child: Container(
+              decoration: isSelected
+                  ? BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromARGB(255, 173, 143, 255),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(9),
+                    )
+                  : null,
+              child: Image.asset(
+                moods[index].imagelib,
+                fit: BoxFit.cover,
+              ),
             ),
-            itemCount: moods.length,
-            itemBuilder: (context, index) {
-              bool isSelected = moods[index].imageAsset == _selectedMoodImage;
-              return GestureDetector(
-                onTap: () => _saveMood(moods[index].imageAsset),
-                child: Container(
-                  decoration: isSelected ? BoxDecoration(
-                    border: Border.all(color: Color.fromARGB(255, 173, 143, 255), width: 2),
-                    borderRadius: BorderRadius.circular(9)
-                  ) : null,
-                  child: Image.asset(
-                    moods[index].imageAsset,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    ),
+          );
+        },
+      ),
+    ],
   );
-}
+  }
 }

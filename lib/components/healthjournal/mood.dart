@@ -1,8 +1,8 @@
 
 class Mood {
-  final String imageAsset;
+  final String imagelib;
 
-  Mood(this.imageAsset);
+  Mood(this.imagelib);
 }
 
 List<Mood> moods = [
