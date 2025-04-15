@@ -155,7 +155,7 @@ class _HealthBotState extends State<HealthBot> {
                       height: 100,
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Image.asset('lib/Images/HeailoPencil.png'),
+                        child: Image.asset('lib/images/HeailoPencil.png'),
                       ),
                     ),
                   ],
