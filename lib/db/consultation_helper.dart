@@ -64,13 +64,13 @@ class HealthMateConsultationDB {
     int patientId,
   ) async {
     final db = await getHealthMateDB();
-    debugPrint("📂 Retrieving consultations for patient ID: $patientId...");
+    debugPrint("Retrieving consultations for patient ID: $patientId...");
     List<Map<String, dynamic>> consultations = await db.query(
       'consultations',
       where: 'patient_id = ?',
       whereArgs: [patientId],
     );
-    debugPrint("📊 Found ${consultations.length} consultations.");
+    debugPrint(" Found ${consultations.length} consultations.");
     return consultations;
   }
 
