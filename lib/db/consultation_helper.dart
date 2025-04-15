@@ -12,12 +12,13 @@ class HealthMateConsultationDB {
 
     _database = await openDatabase(
       dbPath,
+      version: 1, 
       onCreate: (db, version) async {
         await _setUpConsultationDB(db);
       },
     );
 
-    debugPrint("HealthMate consultation database is ready for use!");
+    debugPrint(" HealthMate consultation database is ready for use!");
     return _database!;
   }
 
@@ -33,7 +34,7 @@ class HealthMateConsultationDB {
         consultation_date TEXT
       )
     ''');
-    debugPrint("HealthMate is ready to track consultations!");
+    debugPrint(" HealthMate is ready to track consultations!");
   }
 
   Future<void> logConsultation(
@@ -49,12 +50,14 @@ class HealthMateConsultationDB {
       'symptoms': symptoms,
       'ai_diagnosis': aiDiagnosis,
       'symptom_start_date': symptomStartDate,
-      'consultation_date': DateTime.now().toString(),
+      'consultation_date': DateTime.now().toIso8601String(),
     };
 
     debugPrint("Logging consultation for patient ID: $patientId...");
+    debugPrint("Data: $consultationData");
+
     await db.insert('consultations', consultationData);
-    debugPrint("Consultation saved successfully!");
+    debugPrint(" Consultation saved successfully!");
   }
 
   Future<List<Map<String, dynamic>>> getPatientConsultations(
@@ -67,7 +70,7 @@ class HealthMateConsultationDB {
       where: 'patient_id = ?',
       whereArgs: [patientId],
     );
-    debugPrint("Found ${consultations.length} consultations.");
+    debugPrint("📊 Found ${consultations.length} consultations.");
     return consultations;
   }
 
@@ -96,7 +99,7 @@ class HealthMateConsultationDB {
       'symptom_start_date': symptomStartDate,
     };
 
-    debugPrint("Updating consultation ID: $consultationId...");
+    debugPrint("✏️ Updating consultation ID: $consultationId...");
     await db.update(
       'consultations',
       updatedData,
@@ -108,12 +111,12 @@ class HealthMateConsultationDB {
 
   Future<void> removeConsultation(int consultationId) async {
     final db = await getHealthMateDB();
-    debugPrint("Removing consultation ID: $consultationId...");
+    debugPrint("🗑️ Removing consultation ID: $consultationId...");
     await db.delete(
       'consultations',
       where: 'id = ?',
       whereArgs: [consultationId],
     );
-    debugPrint("Consultation ID $consultationId removed successfully!");
+    debugPrint("Consultation removed successfully!");
   }
 }
