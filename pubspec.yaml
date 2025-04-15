@@ -17,6 +17,12 @@ dependencies:
   google_fonts: ^6.2.1  # Match teammate’s version if needed
   shared_preferences: ^2.2.2
   sqflite_common_ffi: ^2.3.0
+  firebase_auth: ^5.5.2
+  firebase_core: ^3.13.0
+  table_calendar: ^3.1.3
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +33,40 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/Images/  # ✅ Your teammate had this
+    - lib/images/ 
+    - assets/HealthMate2.PNG
+    - assets/healthMateLogo.PNG
+    - assets/back.PNG
+    - assets/flowers.PNG
+    - assets/talkingflower.PNG
+    - assets/talkingflower2.PNG
+    - assets/blackHair1.png
+    - assets/blackHair2.png
+    - assets/blondeHair1.png
+    - assets/blondeHair2.png
+    - assets/blueBackground.png
+    - assets/brownHair1.png
+    - assets/brownHair2.png
+    - assets/cuteHairBlack.png
+    - assets/cuteHairBlonde.png
+    - assets/cuteHairRed.png
+    - assets/faceBlush.png
+    - assets/faceCute.png
+    - assets/faceElated.png
+    - assets/faceSmile.png
+    - assets/faceSmirk.png
+    - assets/greenBackground.png
+    - assets/head1.png
+    - assets/head2.png
+    - assets/head3.png
+    - assets/pigtailsBlonde.png
+    - assets/pigtailsBrown.png
+    - assets/pigtailsRed.png
+    - assets/pinkBackground.png
+    - assets/purpleBackground.png
+    - assets/redBackground.png
+    - assets/redHair1.png
+    - assets/redHair2.png
 
   # fonts:
   #   - family: Schyler
@@ -35,4 +74,3 @@ flutter:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-
