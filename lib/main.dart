@@ -1,16 +1,24 @@
+import 'Pages/homepage.dart';
+import 'Pages/hospitals.dart';
+import 'Pages/myhealth.dart';
+import 'Pages/setting.dart';
+import 'Pages/healthjournal.dart';
+import 'Pages/healthbot.dart';
 
 import 'package:flutter/material.dart';
-
-
-import 'package:healthmate1/pages/healthjournal.dart';
-import 'package:healthmate1/pages/healthbot.dart';
-import 'package:healthmate1/pages/homepage.dart';
-import 'package:healthmate1/pages/hospitals.dart';
-import 'package:healthmate1/pages/myhealth.dart';
-import 'package:healthmate1/pages/settings.dart';
-
+import 'package:flutter/foundation.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  
+  if (!kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.macOS ||
+          defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   runApp(const MyApp());
 }
 
@@ -19,18 +27,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: homepage(),
+      home: Homepage(),
       routes: {
-        '/HomePage' :(context) => homepage(),
-        '/Hospitals' :(context) => hospitals(),
-        '/HealthJournal' :(context) => healthjournal(),
-        '/Healthbot' :(context) => healthbot(),
-        '/MyHealth' :(context) => myhealth(),
-        '/Settings' :(context) => settings(),
-
+        '/HomePage': (context) => Homepage(),
+        '/Hospitals': (context) => Hospitals(),
+        '/HealthJournal': (context) => HealthJournal(),
+        '/HealthBot': (context) => HealthBot(),
+        '/MyHealth': (context) => MyHealth(),
+        '/Settings': (context) => Settings(),
       },
-      );
+    );
   }
 }
+
+  }
+}
+
