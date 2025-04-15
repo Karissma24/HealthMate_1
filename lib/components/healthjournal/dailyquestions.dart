@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:healthmate1/components/healthjournal/SharedPreferencesService.dart';
 
 class DailyQuestions extends StatefulWidget {
@@ -52,7 +53,16 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Daily Questions")),
+      appBar: AppBar(title: Text(
+        "Daily Questions",
+        style: GoogleFonts.fredoka(
+            color: Colors.white ,
+            fontSize: 27.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xFF8888e8),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -60,6 +70,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
             children: [
               TextField(
                 controller: _goalController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "What is one thing you wish to accomplish today?",
                   border: OutlineInputBorder(),
@@ -68,6 +79,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _feelBetterController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "What can you do to feel better today?",
                   border: OutlineInputBorder(),
@@ -76,6 +88,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _laughController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "What made you laugh today?",
                   border: OutlineInputBorder(),
@@ -84,6 +97,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _sleepController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "How did you sleep last night?",
                   border: OutlineInputBorder(),
@@ -92,6 +106,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _areYouOkayController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "Are you okay?",
                   border: OutlineInputBorder(),
@@ -100,6 +115,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _stressLevelController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "What was your stress level today? (1-10)",
                   border: OutlineInputBorder(),
@@ -109,6 +125,7 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 10),
               TextField(
                 controller: _notesController,
+                style: GoogleFonts.fredoka(),
                 decoration: InputDecoration(
                   labelText: "Any other notes?",
                   border: OutlineInputBorder(),
@@ -118,7 +135,15 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveResponses,
-                child: Text("Save Responses"),
+                child: Text(
+                  "Save Responses",
+                  style: GoogleFonts.fredoka(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color:Color.fromARGB(255, 72, 72, 120),
+                    ),
+
+                  ),
               ),
             ],
           ),

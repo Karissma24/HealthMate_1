@@ -1,3 +1,4 @@
+/*
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
@@ -117,3 +118,4 @@ class HealthMateConsultationDB {
     debugPrint("Consultation ID $consultationId removed successfully!");
   }
 }
+*/

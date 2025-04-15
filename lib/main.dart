@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healthmate1/pages/healthjournal.dart';
-import 'package:healthmate1/pages/healthbot.dart';
 import 'package:healthmate1/pages/homepage.dart';
 import 'package:healthmate1/pages/myhealth.dart';
 import 'package:healthmate1/pages/settings.dart';
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/HomePage': (context) => const Homepage(),
         '/HealthJournal': (context) => HealthJournal(),
-        '/HealthBot': (context) => const HealthBot(),
+        //'/HealthBot': (context) => const HealthBot(),
         '/MyHealth': (context) => const MyHealth(),
         '/Settings': (context) => const Settings(),
         //'/Hospitals' :(context) => Hospitals(),

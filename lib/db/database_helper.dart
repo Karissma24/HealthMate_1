@@ -1,3 +1,4 @@
+/*
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
@@ -80,3 +81,4 @@ class HealthMateDatabase {
     debugPrint("Patient ID $id has been removed from HealthMate.");
   }
 }
+*/

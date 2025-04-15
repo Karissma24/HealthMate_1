@@ -50,7 +50,16 @@ class _HealthJournalState extends State<HealthJournal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("My Health Journal")),
+      appBar: AppBar(title: Text(
+        "My Health Journal",
+        style: GoogleFonts.fredoka(
+            color: Colors.white ,
+            fontSize: 27.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xFF8888e8),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(12),
         child: Column(
@@ -70,10 +79,11 @@ class _HealthJournalState extends State<HealthJournal> {
                 children: [
               Text(
               "Mood for the Day",
-              style: GoogleFonts.lato(
+              style: GoogleFonts.fredoka(
                 textStyle: TextStyle(
-                   fontSize: 18,
-                   fontWeight: FontWeight.bold,
+                  color:Color.fromARGB(255, 72, 72, 120),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
                     ),
                   ),
               ),
@@ -86,8 +96,14 @@ class _HealthJournalState extends State<HealthJournal> {
             SizedBox(height: 20),
             Text(
               "Daily Check-in",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+              style: GoogleFonts.fredoka(
+                textStyle: TextStyle(
+                  color:Color.fromARGB(255, 72, 72, 120),
+                  fontSize: 23,
+                  fontWeight: FontWeight.w600,
+                    ),
+                  ),
+              ),
             SizedBox(height: 10),
             TextField(
               controller: _sleepController,
@@ -108,7 +124,16 @@ class _HealthJournalState extends State<HealthJournal> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveResponses,
-              child: Text("Save Responses"),
+              child: Text(
+                "Save Responses",
+                style: GoogleFonts.fredoka(
+                textStyle: TextStyle(
+                  color:Color.fromARGB(255, 72, 72, 120),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                    ),
+                  ),
+              ),
             ),
             SizedBox(height: 20),
             Center(
@@ -122,8 +147,14 @@ class _HealthJournalState extends State<HealthJournal> {
                   );
                 },
                 child: Text(
-                  "Answer Daily Questions",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  "Daily Questions",
+                  style: GoogleFonts.fredoka(
+                  textStyle: TextStyle(
+                  color:Color.fromARGB(255, 72, 72, 120),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ),
