@@ -23,7 +23,7 @@ class HealthMateConsultationDB {
   }
 
   Future<void> _setUpConsultationDB(Database db) async {
-    debugPrint("🛠️ Setting up HealthMate’s consultation records...");
+    debugPrint("Setting up HealthMate’s consultation records...");
     await db.execute('''
       CREATE TABLE consultations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,7 +76,7 @@ class HealthMateConsultationDB {
 
   Future<Map<String, dynamic>?> getConsultationById(int consultationId) async {
     final db = await getHealthMateDB();
-    debugPrint("🔍 Searching for consultation ID: $consultationId...");
+    debugPrint("Searching for consultation ID: $consultationId...");
     List<Map<String, dynamic>> consultations = await db.query(
       'consultations',
       where: 'id = ?',
@@ -99,7 +99,7 @@ class HealthMateConsultationDB {
       'symptom_start_date': symptomStartDate,
     };
 
-    debugPrint("✏️ Updating consultation ID: $consultationId...");
+    debugPrint(" Updating consultation ID: $consultationId...");
     await db.update(
       'consultations',
       updatedData,
@@ -111,7 +111,7 @@ class HealthMateConsultationDB {
 
   Future<void> removeConsultation(int consultationId) async {
     final db = await getHealthMateDB();
-    debugPrint("🗑️ Removing consultation ID: $consultationId...");
+    debugPrint(" Removing consultation ID: $consultationId...");
     await db.delete(
       'consultations',
       where: 'id = ?',
