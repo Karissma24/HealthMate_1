@@ -40,9 +40,9 @@ class _MyHealthState extends State<MyHealth> {
     await prefs.setString('goal_water', waterController.text);
     await prefs.setString('goal_steps', stepsController.text);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Goals saved!")),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Goals saved!")));
   }
 
   void _startPauseTimer() {
@@ -115,103 +115,77 @@ class _MyHealthState extends State<MyHealth> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.white,
-              Colors.white],
+            colors: [Colors.white, Colors.white],
           ),
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildCard(
-                "My Goals",
-                [
-                  _buildTextField(waterController, "Water Goal (oz) 💧"),
-                  _buildTextField(stepsController, "Step Goal 👣"),
-                  ElevatedButton(
-                    onPressed: _saveGoals,
-                    child: Text(
-                      "Save Goals",
-                      style: GoogleFonts.fredoka(
-                        color:Color(0xFF333354),
-                      ),
-                    ),
+              _buildCard("My Goals", [
+                _buildTextField(waterController, "Water Goal (oz) 💧"),
+                _buildTextField(stepsController, "Step Goal 👣"),
+                ElevatedButton(
+                  onPressed: _saveGoals,
+                  child: Text(
+                    "Save Goals",
+                    style: GoogleFonts.fredoka(color: Color(0xFF333354)),
                   ),
-                ],
-              ),
+                ),
+              ]),
               SizedBox(height: 20),
 
-              _buildCard(
-                "Timer ⏱️",
-                [
-                  Text(
-                    "Elapsed: ${Duration(seconds: seconds).toString().split('.').first}",
-                    style: GoogleFonts.fredoka(fontSize: 24),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: _startPauseTimer,
-                        child: Text(
-                          isRunning ? "Pause" : "Start",
-                          style: GoogleFonts.fredoka(
-                            color:Color(0xFF333354),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: _resetTimer,
-                        child: Text(
-                          "Reset",
-                          style: GoogleFonts.fredoka(
-                            color:Color(0xFF333354),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-
-              _buildCard(
-                "Exercise Log 💪",
-                [
-                  _buildTextField(exerciseController, "Enter Exercise"),
-                  ElevatedButton(
-                    onPressed: _addExercise,
-                    child: Text(
-                      "Add Exercise",
-                      style: GoogleFonts.fredoka(
-                        color:Color(0xFF333354),
-                      ),
-                    ),
-                  ),
-                  if (exerciseLog.isNotEmpty)
+              _buildCard("Timer ⏱️", [
+                Text(
+                  "Elapsed: ${Duration(seconds: seconds).toString().split('.').first}",
+                  style: GoogleFonts.fredoka(fontSize: 24),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
                     ElevatedButton(
-                      onPressed: _clearExerciseLog,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
+                      onPressed: _startPauseTimer,
                       child: Text(
-                        "Clear Log",
-                        style: GoogleFonts.fredoka(
-                          color: Colors.white,
-                        ),
+                        isRunning ? "Pause" : "Start",
+                        style: GoogleFonts.fredoka(color: Color(0xFF333354)),
                       ),
                     ),
-                  ...exerciseLog.map(
-                    (e) => ListTile(
-                      title: Text(
-                        e,
-                        style: GoogleFonts.fredoka(),
+                    ElevatedButton(
+                      onPressed: _resetTimer,
+                      child: Text(
+                        "Reset",
+                        style: GoogleFonts.fredoka(color: Color(0xFF333354)),
                       ),
+                    ),
+                  ],
+                ),
+              ]),
+              SizedBox(height: 20),
+
+              _buildCard("Exercise Log 💪", [
+                _buildTextField(exerciseController, "Enter Exercise"),
+                ElevatedButton(
+                  onPressed: _addExercise,
+                  child: Text(
+                    "Add Exercise",
+                    style: GoogleFonts.fredoka(color: Color(0xFF333354)),
+                  ),
+                ),
+                if (exerciseLog.isNotEmpty)
+                  ElevatedButton(
+                    onPressed: _clearExerciseLog,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: Text(
+                      "Clear Log",
+                      style: GoogleFonts.fredoka(color: Colors.white),
                     ),
                   ),
-                ],
-              ),
+                ...exerciseLog.map(
+                  (e) => ListTile(title: Text(e, style: GoogleFonts.fredoka())),
+                ),
+              ]),
             ],
           ),
         ),
