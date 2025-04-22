@@ -18,7 +18,8 @@ class _MoodWidgetState extends State<MoodWidget> {
     super.initState();
     _loadMood();
   }
-Future<void> _loadMood() async {
+
+  Future<void> _loadMood() async {
     String dateKey = 'mood_${widget.selectedDate.toString()}';
     String moodImage = SharedPreferencesService.getString(dateKey);
     setState(() {
@@ -34,59 +35,63 @@ Future<void> _loadMood() async {
     });
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
-  double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
+    int numberOfColumns = 5;
+    double padding = 1;
+    double spacing = 1;
 
-  int numberOfColumns = 3;
-  double imageWidth = (screenWidth / numberOfColumns) - 10;
-  double imageHeight = imageWidth;
+    double imageSize =
+        (screenWidth - (padding * 2) - (spacing * (numberOfColumns - 1))) /
+        numberOfColumns;
 
-  return Column(
-    children: [
-    /*
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          "How are you feeling today?",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-    */ 
-      GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(5),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: numberOfColumns,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-        ),
-        itemCount: moods.length,
-        itemBuilder: (context, index) {
-          bool isSelected = moods[index].imagelib == _selectedMoodImage;
-          return GestureDetector(
-            onTap: () => _saveMood(moods[index].imagelib),
-            child: Container(
-              decoration: isSelected
-                  ? BoxDecoration(
-                      border: Border.all(
-                        color: Color.fromARGB(255, 173, 143, 255),
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(9),
-                    )
-                  : null,
-              child: Image.asset(
-                moods[index].imagelib,
-                fit: BoxFit.cover,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(padding: const EdgeInsets.only(top: 30.0, bottom: 12.0)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: moods.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: numberOfColumns,
+              crossAxisSpacing: spacing,
+              mainAxisSpacing: spacing,
+              childAspectRatio: 1, // Makes each grid square
             ),
-          );
-        },
-      ),
-    ],
-  );
+            itemBuilder: (context, index) {
+              bool isSelected = moods[index].imagelib == _selectedMoodImage;
+              return GestureDetector(
+                onTap: () => _saveMood(moods[index].imagelib),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border:
+                        isSelected
+                            ? Border.all(
+                              color: Color.fromARGB(255, 173, 143, 255),
+                              width: 2,
+                            )
+                            : null,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      moods[index].imagelib,
+                      width: imageSize,
+                      height: imageSize,
+                      fit: BoxFit.contain, // Prevents cropping
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
