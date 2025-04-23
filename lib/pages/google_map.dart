@@ -18,7 +18,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
   Set<Marker> markers = {};
   double _currentZoom = 14.0;
 
-  final String googleApiKey = 'AIzaSyDMo7cE18lLqqnulIKutDxbOcpRRUj1ekw';
+  final String googleApiKey = 'Api key';
 
   @override
   void initState() {
