@@ -84,7 +84,7 @@ class _HomePageState extends State<Homepage> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/Hospitals');
+                  Navigator.pushNamed(context, '/GoogleMap');
                 },
               ),
             ),
