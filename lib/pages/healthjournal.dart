@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../components/healthjournal/moodwidget.dart';
 import '../components/healthjournal/shared_preferences_service.dart';
 import '../components/healthjournal/dailyquestions.dart';
@@ -17,9 +19,12 @@ class HealthJournalState extends State<HealthJournal> {
   final TextEditingController _sleepController = TextEditingController();
   final TextEditingController _energyController = TextEditingController();
 
+  String userId = 'default';
+
   @override
   void initState() {
     super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
     SharedPreferencesService.init();
     _loadResponses();
   }
@@ -33,28 +38,21 @@ class HealthJournalState extends State<HealthJournal> {
 
   Future<void> _loadResponses() async {
     String dateKey = _selectedDate.toIso8601String().split("T")[0];
-    _sleepController.text = SharedPreferencesService.getString(
-      'sleep_$dateKey',
-    );
-    _energyController.text = SharedPreferencesService.getString(
-      'energy_$dateKey',
-    );
+    setState(() {
+      _sleepController.text = SharedPreferencesService.getString('sleep_$dateKey', userId);
+      _energyController.text = SharedPreferencesService.getString('energy_$dateKey', userId);
+    });
   }
 
   Future<void> _saveResponses() async {
     String dateKey = _selectedDate.toIso8601String().split("T")[0];
-    await SharedPreferencesService.setString(
-      'sleep_$dateKey',
-      _sleepController.text,
-    );
-    await SharedPreferencesService.setString(
-      'energy_$dateKey',
-      _energyController.text,
-    );
+    await SharedPreferencesService.setString('sleep_$dateKey', _sleepController.text, userId);
+    await SharedPreferencesService.setString('energy_$dateKey', _energyController.text, userId);
+
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Responses saved for $dateKey")));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Responses saved for $dateKey")),
+    );
   }
 
   @override
@@ -118,7 +116,7 @@ class HealthJournalState extends State<HealthJournal> {
             TextField(
               controller: _sleepController,
               decoration: InputDecoration(
-                labelText: "What is one thing you wish to accomplish today?",
+                labelText: "How did you sleep last night?",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -126,7 +124,7 @@ class HealthJournalState extends State<HealthJournal> {
             TextField(
               controller: _energyController,
               decoration: InputDecoration(
-                labelText: "What can you do to feel better today?",
+                labelText: "What was your energy level today?",
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
@@ -152,9 +150,7 @@ class HealthJournalState extends State<HealthJournal> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) =>
-                              DailyQuestions(selectedDate: _selectedDate),
+                      builder: (context) => DailyQuestions(selectedDate: _selectedDate),
                     ),
                   );
                 },
