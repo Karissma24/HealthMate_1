@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../healthjournal/shared_preferences_service.dart';
 import '../healthjournal/mood.dart';
 
@@ -12,24 +13,26 @@ class MoodWidget extends StatefulWidget {
 
 class _MoodWidgetState extends State<MoodWidget> {
   String _selectedMoodImage = '';
+  late final String userId;
 
   @override
   void initState() {
     super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
     _loadMood();
   }
 
   Future<void> _loadMood() async {
-    String dateKey = 'mood_${widget.selectedDate.toString()}';
-    String moodImage = SharedPreferencesService.getString(dateKey);
+    String dateKey = 'mood_${widget.selectedDate.toString().split(" ")[0]}';
+    String moodImage = SharedPreferencesService.getString(dateKey, userId);
     setState(() {
       _selectedMoodImage = moodImage;
     });
   }
 
   Future<void> _saveMood(String moodImagePath) async {
-    String dateKey = 'mood_${widget.selectedDate.toString().split(' ')[0]}';
-    await SharedPreferencesService.setString(dateKey, moodImagePath);
+    String dateKey = 'mood_${widget.selectedDate.toString().split(" ")[0]}';
+    await SharedPreferencesService.setString(dateKey, moodImagePath, userId);
     setState(() {
       _selectedMoodImage = moodImagePath;
     });
@@ -49,7 +52,7 @@ class _MoodWidgetState extends State<MoodWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(padding: const EdgeInsets.only(top: 30.0, bottom: 12.0)),
+        const Padding(padding: EdgeInsets.only(top: 30.0, bottom: 12.0)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: padding),
           child: GridView.builder(
@@ -60,7 +63,7 @@ class _MoodWidgetState extends State<MoodWidget> {
               crossAxisCount: numberOfColumns,
               crossAxisSpacing: spacing,
               mainAxisSpacing: spacing,
-              childAspectRatio: 1, // Makes each grid square
+              childAspectRatio: 1,
             ),
             itemBuilder: (context, index) {
               bool isSelected = moods[index].imagelib == _selectedMoodImage;
@@ -83,7 +86,7 @@ class _MoodWidgetState extends State<MoodWidget> {
                       moods[index].imagelib,
                       width: imageSize,
                       height: imageSize,
-                      fit: BoxFit.contain, // Prevents cropping
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
