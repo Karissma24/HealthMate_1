@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyHealth extends StatefulWidget {
   const MyHealth({super.key});
@@ -20,25 +21,29 @@ class _MyHealthState extends State<MyHealth> {
   Timer? timer;
   bool isRunning = false;
 
+  String userId = 'default';
+
   @override
   void initState() {
     super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
     _loadGoals();
   }
 
   void _loadGoals() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      waterController.text = prefs.getString('goal_water') ?? '';
-      stepsController.text = prefs.getString('goal_steps') ?? '';
-      exerciseLog = prefs.getStringList('exercise_log') ?? [];
+      waterController.text = prefs.getString('${userId}_goal_water') ?? '';
+      stepsController.text = prefs.getString('${userId}_goal_steps') ?? '';
+      exerciseLog = prefs.getStringList('${userId}_exercise_log') ?? [];
     });
   }
 
   void _saveGoals() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('goal_water', waterController.text);
-    await prefs.setString('goal_steps', stepsController.text);
+    await prefs.setString('${userId}_goal_water', waterController.text);
+    await prefs.setString('${userId}_goal_steps', stepsController.text);
+
     if (!mounted) return;
     ScaffoldMessenger.of(
       context,
@@ -75,13 +80,13 @@ class _MyHealthState extends State<MyHealth> {
         exerciseController.clear();
       });
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList('exercise_log', exerciseLog);
+      await prefs.setStringList('${userId}_exercise_log', exerciseLog);
     }
   }
 
   void _clearExerciseLog() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('exercise_log');
+    await prefs.remove('${userId}_exercise_log');
     setState(() {
       exerciseLog.clear();
     });
