@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../healthjournal/shared_preferences_service.dart';
 
 class DailyQuestions extends StatefulWidget {
@@ -26,62 +27,34 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
   }
 
   Future<void> _loadResponses() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
     String dateKey = widget.selectedDate.toIso8601String().split("T")[0];
-    _goalController.text = SharedPreferencesService.getString('goal_$dateKey');
-    _feelBetterController.text = SharedPreferencesService.getString(
-      'feelBetter_$dateKey',
-    );
-    _laughController.text = SharedPreferencesService.getString(
-      'laugh_$dateKey',
-    );
-    _sleepController.text = SharedPreferencesService.getString(
-      'sleep_$dateKey',
-    );
-    _areYouOkayController.text = SharedPreferencesService.getString(
-      'areYouOkay_$dateKey',
-    );
-    _stressLevelController.text = SharedPreferencesService.getString(
-      'stressLevel_$dateKey',
-    );
-    _notesController.text = SharedPreferencesService.getString(
-      'notes_$dateKey',
-    );
+
+    _goalController.text = SharedPreferencesService.getString('goal_$dateKey', userId);
+    _feelBetterController.text = SharedPreferencesService.getString('feelBetter_$dateKey', userId);
+    _laughController.text = SharedPreferencesService.getString('laugh_$dateKey', userId);
+    _sleepController.text = SharedPreferencesService.getString('sleep_$dateKey', userId);
+    _areYouOkayController.text = SharedPreferencesService.getString('areYouOkay_$dateKey', userId);
+    _stressLevelController.text = SharedPreferencesService.getString('stressLevel_$dateKey', userId);
+    _notesController.text = SharedPreferencesService.getString('notes_$dateKey', userId);
   }
 
   Future<void> _saveResponses() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
     String dateKey = widget.selectedDate.toIso8601String().split("T")[0];
-    await SharedPreferencesService.setString(
-      'goal_$dateKey',
-      _goalController.text,
-    );
-    await SharedPreferencesService.setString(
-      'feelBetter_$dateKey',
-      _feelBetterController.text,
-    );
-    await SharedPreferencesService.setString(
-      'laugh_$dateKey',
-      _laughController.text,
-    );
-    await SharedPreferencesService.setString(
-      'sleep_$dateKey',
-      _sleepController.text,
-    );
-    await SharedPreferencesService.setString(
-      'areYouOkay_$dateKey',
-      _areYouOkayController.text,
-    );
-    await SharedPreferencesService.setString(
-      'stressLevel_$dateKey',
-      _stressLevelController.text,
-    );
-    await SharedPreferencesService.setString(
-      'notes_$dateKey',
-      _notesController.text,
-    );
+
+    await SharedPreferencesService.setString('goal_$dateKey', _goalController.text, userId);
+    await SharedPreferencesService.setString('feelBetter_$dateKey', _feelBetterController.text, userId);
+    await SharedPreferencesService.setString('laugh_$dateKey', _laughController.text, userId);
+    await SharedPreferencesService.setString('sleep_$dateKey', _sleepController.text, userId);
+    await SharedPreferencesService.setString('areYouOkay_$dateKey', _areYouOkayController.text, userId);
+    await SharedPreferencesService.setString('stressLevel_$dateKey', _stressLevelController.text, userId);
+    await SharedPreferencesService.setString('notes_$dateKey', _notesController.text, userId);
+
     if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Responses saved for $dateKey")));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Responses saved for $dateKey")),
+    );
   }
 
   @override
@@ -103,68 +76,19 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextField(
-                controller: _goalController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "What is one thing you wish to accomplish today?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _feelBetterController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "What can you do to feel better today?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _laughController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "What made you laugh today?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _sleepController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "How did you sleep last night?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _areYouOkayController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "Are you okay?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _stressLevelController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "What was your stress level today? (1-10)",
-                  border: OutlineInputBorder(),
-                ),
+              _buildQuestionField(_goalController, "What is one thing you wish to accomplish today?"),
+              _buildQuestionField(_feelBetterController, "What can you do to feel better today?"),
+              _buildQuestionField(_laughController, "What made you laugh today?"),
+              _buildQuestionField(_sleepController, "How did you sleep last night?"),
+              _buildQuestionField(_areYouOkayController, "Are you okay?"),
+              _buildQuestionField(
+                _stressLevelController,
+                "What was your stress level today? (1-10)",
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 10),
-              TextField(
-                controller: _notesController,
-                style: GoogleFonts.fredoka(),
-                decoration: InputDecoration(
-                  labelText: "Any other notes?",
-                  border: OutlineInputBorder(),
-                ),
+              _buildQuestionField(
+                _notesController,
+                "Any other notes?",
                 maxLines: 3,
               ),
               SizedBox(height: 20),
@@ -181,6 +105,24 @@ class _DailyQuestionsPageState extends State<DailyQuestions> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionField(TextEditingController controller, String label,
+      {TextInputType keyboardType = TextInputType.text, int maxLines = 1}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: TextField(
+        controller: controller,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        style: GoogleFonts.fredoka(),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: GoogleFonts.fredoka(),
+          border: OutlineInputBorder(),
         ),
       ),
     );
