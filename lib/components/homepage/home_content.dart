@@ -52,7 +52,7 @@ class _HomeContentState extends State<HomeContent> {
       color2: Color(0xFFff4e4e),
       imageWidth: 227,
       imageHeight: 400,
-      onTap: (context) => Navigator.pushNamed(context, '/Hospitals'),
+      onTap: (context) => Navigator.pushNamed(context, '/GoogleMap'),
     ),
   ];
 
