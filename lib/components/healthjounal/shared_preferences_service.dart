@@ -7,13 +7,11 @@ class SharedPreferencesService {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  static Future<void> setString(String key, String value) async {
-    await _preferences?.setString(key, value);
+  static Future<void> setString(String key, String value, String userId) async {
+    await _preferences?.setString('${userId}_$key', value);
   }
 
-  static String getString(String key) {
-    return _preferences?.getString(key) ?? '';
+  static String getString(String key, String userId) {
+    return _preferences?.getString('${userId}_$key') ?? '';
   }
-
-  // Add other types as needed, such as getInt, setInt, etc.
 }
