@@ -19,13 +19,23 @@ class _MoodWidgetState extends State<MoodWidget> {
     _loadMood();
   }
 
+  @override
+  void didUpdateWidget(covariant MoodWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _loadMood();
+    }
+  }
+
+
   Future<void> _loadMood() async {
-    String dateKey = 'mood_${widget.selectedDate.toString()}';
+    String dateKey = 'mood_${widget.selectedDate.toIso8601String().split("T")[0]}';
     String moodImage = SharedPreferencesService.getString(dateKey);
     setState(() {
       _selectedMoodImage = moodImage;
     });
   }
+
 
   Future<void> _saveMood(String moodImagePath) async {
     String dateKey = 'mood_${widget.selectedDate.toString().split(' ')[0]}';
@@ -34,6 +44,8 @@ class _MoodWidgetState extends State<MoodWidget> {
       _selectedMoodImage = moodImagePath;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
