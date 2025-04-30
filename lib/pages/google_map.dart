@@ -18,7 +18,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
   Set<Marker> markers = {};
   double _currentZoom = 14.0;
 
-  final String googleApiKey = 'Api key';
+  final String googleApiKey = 'API Key';
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
     final url =
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
         '?location=${location.latitude},${location.longitude}'
-        '&radius=40233' // ~25 miles
+        '&radius=40233'
         '&type=hospital'
         '&key=$googleApiKey';
 
@@ -93,7 +93,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
       final data = json.decode(response.body);
       final results = data['results'] as List;
 
-      print('✅ Found ${results.length} hospitals');
+      print(' Found ${results.length} hospitals');
 
       setState(() {
         for (var place in results) {
@@ -132,7 +132,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
                       mode: LaunchMode.externalApplication,
                     );
                   } else {
-                    print('❌ Could not launch directions.');
+                    print('Could not launch directions.');
                   }
                 },
               ),
@@ -141,7 +141,7 @@ class _GoogleMapFlutterState extends State<GoogleMapFlutter> {
         }
       });
     } else {
-      print('❌ Places API error: ${response.body}');
+      print(' Places API error: ${response.body}');
     }
   }
 
