@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../healthjournal/shared_preferences_service.dart';
-import '../healthjournal/mood.dart';
+import 'shared_preferences_service.dart';
+import 'mood.dart';
 
 class MoodWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -13,26 +13,40 @@ class MoodWidget extends StatefulWidget {
 
 class _MoodWidgetState extends State<MoodWidget> {
   String _selectedMoodImage = '';
-  late final String userId;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    userId = FirebaseAuth.instance.currentUser?.uid ?? 'default';
+    userId = FirebaseAuth.instance.currentUser?.uid;
     _loadMood();
   }
 
+  @override
+  void didUpdateWidget(covariant MoodWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _loadMood();
+    }
+  }
+
   Future<void> _loadMood() async {
-    String dateKey = 'mood_${widget.selectedDate.toString().split(" ")[0]}';
-    String moodImage = SharedPreferencesService.getString(dateKey, userId);
+    if (userId == null) return;
+
+    String dateKey =
+        'mood_${widget.selectedDate.toIso8601String().split("T")[0]}';
+    String moodImage = SharedPreferencesService.getString(dateKey, userId!);
     setState(() {
       _selectedMoodImage = moodImage;
     });
   }
 
   Future<void> _saveMood(String moodImagePath) async {
-    String dateKey = 'mood_${widget.selectedDate.toString().split(" ")[0]}';
-    await SharedPreferencesService.setString(dateKey, moodImagePath, userId);
+    if (userId == null) return;
+
+    String dateKey =
+        'mood_${widget.selectedDate.toIso8601String().split("T")[0]}';
+    await SharedPreferencesService.setString(dateKey, moodImagePath, userId!);
     setState(() {
       _selectedMoodImage = moodImagePath;
     });
@@ -52,7 +66,7 @@ class _MoodWidgetState extends State<MoodWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Padding(padding: EdgeInsets.only(top: 30.0, bottom: 12.0)),
+        Padding(padding: const EdgeInsets.only(top: 30.0, bottom: 12.0)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: padding),
           child: GridView.builder(
