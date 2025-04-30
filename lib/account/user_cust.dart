@@ -1,14 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserCust extends StatefulWidget {
   const UserCust({super.key});
 
   @override
-  UserCustState createState() => UserCustState();
+  _UserCustState createState() => _UserCustState();
 }
 
-class UserCustState extends State<UserCust> {
+class _UserCustState extends State<UserCust> {
   final List<String> backgrounds = [
     'assets/blueBackground.png',
     'assets/greenBackground.png',
@@ -69,29 +70,55 @@ class UserCustState extends State<UserCust> {
   }
 
   Future<void> _saveSelections() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('backgroundIndex', backgroundIndex);
-    await prefs.setInt('headIndex', headIndex);
-    await prefs.setInt('hairIndex', hairIndex);
-    await prefs.setInt('expressionIndex', expressionIndex);
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw Exception("User not signed in");
 
+      await FirebaseFirestore.instance
+          .collection('customizations')
+          .doc(uid)
+          .set({
+            'backgroundIndex': backgroundIndex,
+            'headIndex': headIndex,
+            'hairIndex': hairIndex,
+            'expressionIndex': expressionIndex,
+          });
 
-    if (!mounted) return;
-
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text("Changes saved!")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Changes saved to Firestore!")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Save failed: $e")));
+    }
   }
 
   Future<void> _loadSelections() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      backgroundIndex = prefs.getInt('backgroundIndex') ?? 0;
-      headIndex = prefs.getInt('headIndex') ?? 0;
-      hairIndex = prefs.getInt('hairIndex') ?? 0;
-      expressionIndex = prefs.getInt('expressionIndex') ?? 0;
-    });
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw Exception("User not signed in");
+
+      DocumentSnapshot doc =
+          await FirebaseFirestore.instance
+              .collection('customizations')
+              .doc(uid)
+              .get();
+
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          backgroundIndex = data['backgroundIndex'] ?? 0;
+          headIndex = data['headIndex'] ?? 0;
+          hairIndex = data['hairIndex'] ?? 0;
+          expressionIndex = data['expressionIndex'] ?? 0;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Load failed: $e")));
+    }
   }
 
   @override
