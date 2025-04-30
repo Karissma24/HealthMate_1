@@ -128,7 +128,7 @@ class _MyHealthState extends State<MyHealth> {
           child: Column(
             children: [
               _buildCard("My Goals", [
-                _buildTextField(waterController, "Water Goal (oz) 💧"),
+                _buildTextField(waterController, "Water Goal (oz) "),
                 _buildTextField(stepsController, "Step Goal 👣"),
                 ElevatedButton(
                   onPressed: _saveGoals,
