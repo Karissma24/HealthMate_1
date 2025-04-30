@@ -159,22 +159,6 @@ class _HomePageState extends State<Homepage> {
               ),
             ),
 
-            // Settings
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: ListTile(
-                leading: const Icon(Icons.settings, color: Colors.black),
-                title: const Text(
-                  "Settings",
-                  style: TextStyle(color: Colors.black),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/Settings');
-                },
-              ),
-            ),
-
             // Logout
             Padding(
               padding: const EdgeInsets.only(left: 5),
