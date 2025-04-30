@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'settings.dart';
 import 'terms_and_conditions.dart';
 import 'user_cust.dart';
 import 'contact_us.dart';
@@ -407,7 +406,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 150,
+                      width: 220,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
@@ -433,39 +432,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Text(
                           "Read our privacy and AI policies!",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    SizedBox(
-                      width: 100,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SettingsPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: const BorderSide(
-                              color: Color(0xFF1A85F8),
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Settings",
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
