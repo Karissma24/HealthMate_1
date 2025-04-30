@@ -14,7 +14,6 @@ import 'account/password_reset.dart';
 // Core app pages
 import 'Pages/homepage.dart';
 import 'Pages/myhealth.dart';
-import 'Pages/setting.dart';
 import 'Pages/healthjournal.dart';
 import 'Pages/healthbot.dart';
 import 'Pages/google_map.dart';
@@ -65,7 +64,6 @@ class HealthMate extends StatelessWidget {
         "/HealthJournal": (context) => const HealthJournal(),
         "/HealthBot": (context) => const HealthBot(),
         "/MyHealth": (context) => const MyHealth(),
-        "/Settings": (context) => const Settings(),
 
         // Profile & extras
         "/userprofile": (context) => const UserCust(),
